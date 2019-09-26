@@ -1098,7 +1098,7 @@ done
 
 - [GTFOBins](https://gtfobins.github.io/)
 - [LinEnum](https://github.com/rebootuser/LinEnum/blob/master/LinEnum.sh)
-- [LinuxExploitSuggester](https://gitlab.com/kalilinux/packages/linux-exploit-suggester/blob/kali/master/Linux_Exploit_Suggester.pl
+- [LinuxExploitSuggester](https://gitlab.com/kalilinux/packages/linux-exploit-suggester/blob/kali/master/Linux_Exploit_Suggester.pl)
 - [linuxprivchecker](https://github.com/sleventyeleven/linuxprivchecker/blob/master/linuxprivchecker.py)
 
 ### Linux Precompiled Exploits
