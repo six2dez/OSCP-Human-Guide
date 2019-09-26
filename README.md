@@ -123,8 +123,8 @@ After this last month this was my result: IT Network unlocked, 32 machines roote
 ### Result
 
 - After 8 hours 4 machines rooted. After 20 hours 5 machines rooted, with 5 slept.
-
-- Report in 4 hours.
+- [This](https://github.com/whoisflynn/OSCP-Exam-Report-Template) is the template used for my exam report.
+- Report done in 4 hours.
 
   
 
