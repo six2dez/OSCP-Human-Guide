@@ -808,8 +808,8 @@ Now we start the whole enumeration-process over gain.
 - Suid misconfiguration
 - World writable scripts invoked by root
 - Unmounted filesystems
-- Mirar en /var/backups
-- Mirar en /etc/fstab y en mount
+- Look in /var/backups
+- Look in /etc/fstab y en mount
 
 Less likely
 
@@ -1094,15 +1094,15 @@ done
 
 ```
 
-
-
 ### Linux Privesc Tools
 
-- https://gtfobins.github.io/ Exploitables binaries
-- https://github.com/kevthehermit/pentest/blob/master/linux-enum-mod.sh
-- https://github.com/rebootuser/LinEnum/blob/master/LinEnum.sh
-- https://github.com/jondonas/linux-exploit-suggester-2/blob/master/linux-exploit-suggester-2.pl
-- https://github.com/sleventyeleven/linuxprivchecker/blob/master/linuxprivchecker.py
+- [GTFOBins](https://gtfobins.github.io/)
+- [LinEnum](https://github.com/rebootuser/LinEnum/blob/master/LinEnum.sh)
+- [LinuxExploitSuggester](https://gitlab.com/kalilinux/packages/linux-exploit-suggester/blob/kali/master/Linux_Exploit_Suggester.pl
+- [linuxprivchecker](https://github.com/sleventyeleven/linuxprivchecker/blob/master/linuxprivchecker.py)
+
+### Linux Precompiled Exploits
+- [kernel-exploits](https://github.com/lucyoa/kernel-exploits)
 
 ## Windows
 
@@ -1427,20 +1427,13 @@ echo Start-Process C:\Users\User\AppData\Local\Temp\backdoor.exe -Credential $cr
 
 ### Windows privesc/enum tools
 
-- https://github.com/M4ximuss/Powerless
-- https://github.com/PowerShellMafia/PowerSploit/tree/master/Privesc
-- https://github.com/411Hall/JAWS
-- https://github.com/rasta-mouse/Sherlock/blob/master/Sherlock.ps1
-- https://github.com/PowerShellEmpire/PowerTools/blob/master/PowerUp/PowerUp.ps1
-- https://github.com/GDSSecurity/Windows-Exploit-Suggester/blob/master/windows-exploit-suggester.py
-- https://github.com/pentestmonkey/windows-privesc-check
+- [windows-exploit-suggester](https://github.com/GDSSecurity/Windows-Exploit-Suggester/blob/master/windows-exploit-suggester.py)
+- [windows-privesc-check](https://github.com/pentestmonkey/windows-privesc-check)
+- [PowerUp](https://github.com/PowerShellEmpire/PowerTools/blob/master/PowerUp/PowerUp.ps1)
 
-### Windows precompiled Scripts
+### Windows precompiled exploits
 
-```
-https://github.com/abatchy17/WindowsExploits
-https://github.com/lucyoa/kernel-exploits
-```
+- [WindowsExploits](https://github.com/abatchy17/WindowsExploits)
 
 # **Loot**
 
