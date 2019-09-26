@@ -54,6 +54,7 @@ Repeat this mantra: **Sleep, rest, calm down you will get it**
 10. Find out how to upload files.
 11. Upload your privilege escalation script.
     1. In case of Linux I always used LinEnum and linux-exploit-suggester
+    2. Check services running and check the strange ones in [gtfobins](https://gtfobins.github.io/) and [exploit-db](https://www.exploit-db.com/)
 12. Run your exploit and get root, collect proofs, passwords, review root paths and home paths for interesting files for other machines.
 
 ## Exam preparation (after labs)
