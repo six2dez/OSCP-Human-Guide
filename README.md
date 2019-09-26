@@ -66,36 +66,36 @@ I did 4 exam mockups in 2 weeks, yes, 24 hours for 5 machines.
 
 #### First mockup:
 
-- Brainpan
-- Kioptrix2014
-- Lordoftheroot
-- Pwnlab_init
-- VulnOsv2
+- Brainpan [VulnHub](https://www.vulnhub.com/entry/brainpan-1,51/)
+- Kioptrix2014 [VulnHub](https://www.vulnhub.com/entry/kioptrix-2014-5,62/)
+- Lordoftheroot [VulnHub](https://www.vulnhub.com/entry/lord-of-the-root-101,129/)
+- Pwnlab_init [VulnHub](https://www.vulnhub.com/entry/pwnlab-init,158/)
+- VulnOsv2 [VulnHub](https://www.vulnhub.com/entry/pwnlab-init,158/)
 
 #### Second mockup
 
-- Bastard
-- Blue
-- Conceal
-- Devel
-- Metasploitable3_windows
-- Silo
+- Bastard [HTB](https://www.hackthebox.eu/home/machines/profile/7)
+- Blue [HTB](https://www.hackthebox.eu/home/machines/profile/51)
+- Conceal [HTB](https://www.hackthebox.eu/home/machines/profile/168)
+- Devel [HTB](https://www.hackthebox.eu/home/machines/profile/3)
+- Metasploitable3_windows [GitHub](https://github.com/rapid7/metasploitable3)
+- Silo [HTB](https://www.hackthebox.eu/home/machines/profile/131)
 
 #### Third mockup
 
-- LazySysadmin
-- Metasploitable3_ubuntu
-- MrRobot
-- Pinky's Palace v1
+- LazySysadmin [VulnHub](https://www.vulnhub.com/entry/lazysysadmin-1,205/)
+- Metasploitable3_ubuntu [GitHub](https://github.com/rapid7/metasploitable3)
+- MrRobot [VulnHub](https://www.vulnhub.com/entry/mr-robot-1,151/)
+- Pinky's Palace v1 [VulnHub](https://www.vulnhub.com/entry/pinkys-palace-v1,225/)
 - Own crafted Windows XP machine with SLMail, Minishare, DoStackOverflowGood, VulnServer and WarFTPD.
 
 #### Fourth mockup
 
-- Active
-- Bounty
-- Brainpan
-- Cronos
-- DevOops
+- Active [HTB](https://www.hackthebox.eu/home/machines/profile/148)
+- Bounty [HTB](https://www.hackthebox.eu/home/machines/profile/142)
+- Brainpan [VulnHub](https://www.vulnhub.com/entry/brainpan-1,51/)
+- Cronos [HTB](https://www.hackthebox.eu/home/machines/profile/11)
+- DevOops [HTB](https://www.hackthebox.eu/home/machines/profile/140)
 
 ## Exam first try
 
