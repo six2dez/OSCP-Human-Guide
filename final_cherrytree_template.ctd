@@ -1,0 +1,152 @@
+<?xml version="1.0" ?>
+<cherrytree>
+	<node custom_icon_id="10" foreground="" is_bold="True" name="10.11.1.111" prog_lang="custom-colors" readonly="False" tags="" unique_id="2">
+		<rich_text></rich_text>
+		<node custom_icon_id="21" foreground="" is_bold="False" name="Enumeration" prog_lang="custom-colors" readonly="False" tags="" unique_id="17">
+			<rich_text underline="single" weight="heavy">TCP</rich_text>
+			<rich_text>
+
+
+
+
+</rich_text>
+			<rich_text underline="single" weight="heavy">UDP</rich_text>
+			<node custom_icon_id="18" foreground="" is_bold="False" name="Nmap" prog_lang="custom-colors" readonly="False" tags="" unique_id="24">
+				<rich_text></rich_text>
+			</node>
+			<node custom_icon_id="18" foreground="" is_bold="False" name="Nikto" prog_lang="custom-colors" readonly="False" tags="" unique_id="1">
+				<rich_text></rich_text>
+			</node>
+			<node custom_icon_id="18" foreground="" is_bold="False" name="Dirbuster" prog_lang="custom-colors" readonly="False" tags="" unique_id="25">
+				<rich_text></rich_text>
+			</node>
+			<node custom_icon_id="18" foreground="" is_bold="False" name="SMB" prog_lang="custom-colors" readonly="False" tags="" unique_id="21">
+				<rich_text></rich_text>
+			</node>
+			<node custom_icon_id="18" foreground="" is_bold="False" name="DB" prog_lang="custom-colors" readonly="False" tags="" unique_id="31">
+				<rich_text></rich_text>
+			</node>
+			<node custom_icon_id="18" foreground="" is_bold="False" name="Other" prog_lang="custom-colors" readonly="False" tags="" unique_id="32">
+				<rich_text></rich_text>
+			</node>
+		</node>
+		<node custom_icon_id="40" foreground="" is_bold="False" name="Exploitation" prog_lang="custom-colors" readonly="False" tags="" unique_id="22">
+			<rich_text weight="heavy">Service Exploited:  
+Vulnerability Type:
+Exploit POC:</rich_text>
+			<rich_text>
+</rich_text>
+			<rich_text weight="heavy">Description</rich_text>
+			<rich_text>: 
+
+
+
+</rich_text>
+			<rich_text underline="single" weight="heavy">Discovery of Vulnerability</rich_text>
+			<rich_text>
+
+
+
+
+
+
+</rich_text>
+			<rich_text underline="single" weight="heavy">Exploit Code Used</rich_text>
+			<rich_text>
+
+
+
+
+
+
+
+</rich_text>
+			<rich_text underline="single" weight="heavy">Proof\Local.txt File</rich_text>
+			<rich_text>
+
+   ☐ Screenshot with ifconfig\ipconfig
+   ☐ Submit too OSCP Exam Panel
+
+
+
+
+
+
+</rich_text>
+		</node>
+		<node custom_icon_id="41" foreground="" is_bold="False" name="Priv Escalation" prog_lang="custom-colors" readonly="False" tags="" unique_id="12">
+			<rich_text weight="heavy">Service Exploited:  
+Vulnerability Type:
+Exploit POC:</rich_text>
+			<rich_text>
+</rich_text>
+			<rich_text weight="heavy">Description</rich_text>
+			<rich_text>: 
+
+</rich_text>
+			<rich_text underline="single" weight="heavy">Discovery of Vulnerability</rich_text>
+			<rich_text>
+
+
+
+
+
+
+</rich_text>
+			<rich_text underline="single" weight="heavy">Exploit Code Used</rich_text>
+			<rich_text>
+
+
+
+
+
+
+
+</rich_text>
+			<rich_text underline="single" weight="heavy">Proof\Local.txt File</rich_text>
+			<rich_text>
+
+   ☐ Screenshot with ifconfig\ipconfig
+   ☐ Submit too OSCP Exam Panel
+
+</rich_text>
+		</node>
+		<node custom_icon_id="18" foreground="" is_bold="False" name="Host Information" prog_lang="custom-colors" readonly="False" tags="" unique_id="15">
+			<rich_text underline="single" weight="heavy">Operating System</rich_text>
+			<rich_text>
+
+
+
+</rich_text>
+			<rich_text underline="single" weight="heavy">Architecture</rich_text>
+			<rich_text>
+
+
+
+</rich_text>
+			<rich_text underline="single" weight="heavy">Domain</rich_text>
+			<rich_text>
+
+
+
+</rich_text>
+			<rich_text underline="single" weight="heavy">Installed Updates</rich_text>
+			<rich_text>
+
+</rich_text>
+		</node>
+		<node custom_icon_id="43" foreground="" is_bold="False" name="Goodies" prog_lang="custom-colors" readonly="False" tags="" unique_id="3">
+			<rich_text></rich_text>
+			<node custom_icon_id="18" foreground="" is_bold="False" name="Hashes" prog_lang="custom-colors" readonly="False" tags="" unique_id="9">
+				<rich_text></rich_text>
+			</node>
+			<node custom_icon_id="18" foreground="" is_bold="False" name="Passwords" prog_lang="custom-colors" readonly="False" tags="" unique_id="5">
+				<rich_text>
+</rich_text>
+			</node>
+			<node custom_icon_id="18" foreground="" is_bold="False" name="Proof\Flags\Other" prog_lang="custom-colors" readonly="False" tags="" unique_id="6">
+				<rich_text></rich_text>
+			</node>
+		</node>
+	</node>
+</cherrytree>

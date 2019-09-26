@@ -1,4 +1,29 @@
+Table of Contents
+=================
+
+   * [OSCP-Human-Guide](#oscp-human-guide)
+      * [Intro - Before OSCP](#intro---before-oscp)
+         * [Penetration Testing Book](#penetration-testing-book)
+         * [HackTheBox (the easiest ones) and VulnHub](#hackthebox-the-easiest-ones-and-vulnhub)
+      * [Course and Lab](#course-and-lab)
+         * [Lab machines step-by-step](#lab-machines-step-by-step)
+      * [Exam preparation (after labs)](#exam-preparation-after-labs)
+         * [HackTheBox(VIP) and VulnHub (medium ones)](#hacktheboxvip-and-vulnhub-medium-ones)
+         * [Exam mockups](#exam-mockups)
+            * [First mockup:](#first-mockup)
+            * [Second mockup](#second-mockup)
+            * [Third mockup](#third-mockup)
+            * [Fourth mockup](#fourth-mockup)
+      * [Exam first try](#exam-first-try)
+         * [Preparations](#preparations)
+         * [Result](#result)
+      * [1 extra lab month](#1-extra-lab-month)
+      * [Exam second try](#exam-second-try)
+         * [Preparations](#preparations-1)
+         * [Result](#result-1)
+
 # OSCP-Human-Guide
+
 My own OSCP guide
 
 ## Intro - Before OSCP
