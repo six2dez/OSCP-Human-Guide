@@ -478,14 +478,14 @@ dotdotpwn.pl -m http -h 10.11.1.111 -M GET -o unix
 dirb http://10.11.1.111 -r -o dirb-10.11.1.111.txt
 
 # Gobuster - remove relevant responde codes (403 for example)
-gobuster -u http://10.11.1.111 -w /usr/share/seclists/Discovery/Web_Content/common.txt -s '200,204,301,302,307,403,500' -e
+gobuster dir -u http://10.11.1.111 -w /usr/share/seclists/Discovery/Web_Content/common.txt -s '200,204,301,302,307,403,500' -e
 
 # Wfuzz
 wfuzz -c -z file,/usr/share/wfuzz/wordlist/general/common.txt --hc 404 http://10.11.1.8/FUZZ
 
-gobuster -e -u http://10.11.1.111/ -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt
-gobuster -u http://$10.11.1.111 -w /usr/share/seclists/Discovery/Web_Content/Top1000-RobotsDisallowed.txt
-gobuster -e -u http://10.11.1.111/ -w /usr/share/wordlists/dirb/common.txt
+gobuster dir -e -u http://10.11.1.111/ -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt
+gobuster dir -u http://$10.11.1.111 -w /usr/share/seclists/Discovery/Web_Content/Top1000-RobotsDisallowed.txt
+gobuster dir -e -u http://10.11.1.111/ -w /usr/share/wordlists/dirb/common.txt
 
 dotdotpwn.pl -m http -h 10.11.1.111 -M GET -o unix
 
