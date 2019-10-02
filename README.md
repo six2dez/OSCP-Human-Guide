@@ -1,5 +1,7 @@
 # OSCP-Human-Guide (WIP)
 
+**This page is the jouney with some tips, the real guide is [here](https://github.com/six2dez/OSCP-Human-Guide/blob/master/oscp_human_guide.md)**
+
 My own OSCP guide with some presents, my owncrafted [guide](https://github.com/six2dez/OSCP-Human-Guide/blob/master/oscp_human_guide.md) and my Cherrytree [template](https://github.com/six2dez/OSCP-Human-Guide/blob/master/final_cherrytree_template.ctd), enjoy and feel free to contribute :)
 
 Table of Contents
@@ -54,6 +56,7 @@ Repeat this mantra: **Sleep, rest, calm down you will get it**
 10. Find out how to upload files.
 11. Upload your privilege escalation script.
     1. In case of Linux I always used LinEnum and linux-exploit-suggester
+    2. Check services running and check the strange ones in [gtfobins](https://gtfobins.github.io/) and [exploit-db](https://www.exploit-db.com/)
 12. Run your exploit and get root, collect proofs, passwords, review root paths and home paths for interesting files for other machines.
 
 ## Exam preparation (after labs)
@@ -120,8 +123,8 @@ After this last month this was my result: IT Network unlocked, 32 machines roote
 ### Result
 
 - After 8 hours 4 machines rooted. After 20 hours 5 machines rooted, with 5 slept.
-
-- Report in 4 hours.
+- [This](https://github.com/whoisflynn/OSCP-Exam-Report-Template) is the template used for my exam report.
+- Report done in 4 hours.
 
   
 
