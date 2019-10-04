@@ -65,7 +65,7 @@ Repeat this mantra: **Sleep, rest, calm down you will get it**
 
 ### Exam mockups
 
-I did 4 exam mockups in 2 weeks, yes, 24 hours for 5 machines. 
+I did 4 exam mockups in 2 weeks, yes, 24 hours for 5 machines. Main resource to choose machines: [NetSecFocus Trophy Room](https://docs.google.com/spreadsheets/d/1dwSMIAPIam0PuRBkCiDI88pU3yzrqqHkDtBngUHNCw8)
 
 #### First mockup:
 
