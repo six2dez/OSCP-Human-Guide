@@ -1,6 +1,6 @@
 # OSCP-Human-Guide (WIP)
 
-**This page is the jouney with some tips, the real guide is [here](https://github.com/six2dez/OSCP-Human-Guide/blob/master/oscp_human_guide.md)**
+**This page is the jouney with some tips, the real guide is [HERE](https://github.com/six2dez/OSCP-Human-Guide/blob/master/oscp_human_guide.md)**
 
 My own OSCP guide with some presents, my owncrafted [guide](https://github.com/six2dez/OSCP-Human-Guide/blob/master/oscp_human_guide.md) and my Cherrytree [template](https://github.com/six2dez/OSCP-Human-Guide/blob/master/final_cherrytree_template.ctd), enjoy and feel free to contribute :)
 
@@ -42,7 +42,10 @@ Repeat this mantra: **Sleep, rest, calm down you will get it**
 
 ### Lab machines step-by-step
 
-1. Open CherryTree template to get screenshots and paste outputs.
+This is a must: **Use only the VM provided for this course, not the Kali latest ISO** 
+I did it with the PWK VM upgrading only MSF, Nmap, Nikto and the basics, but **not** upgrade the entire OS.
+
+1. Open CherryTree template to take screenshots and paste outputs.
 2. Run simple nmap and then the slower.
 3. Check first results (webs, ssh, ftp) from the first fast nmap scan.
 4. Review slower nmap scan.
