@@ -1,8 +1,14 @@
 Table of Contents
 =================
 
+   * [Table of Contents](#table-of-contents)
    * [<strong>Recon</strong>](#recon)
       * [Enumeration AIO](#enumeration-aio)
+      * [File enumeration](#file-enumeration)
+         * [Common](#common)
+         * [Disk files](#disk-files)
+         * [Images](#images)
+         * [Audio](#audio)
       * [Port 21 - FTP](#port-21---ftp)
       * [Port 22 - SSH](#port-22---ssh)
       * [Port 25 - Telnet](#port-25---telnet)
@@ -25,6 +31,7 @@ Table of Contents
       * [3306 - MySQL](#3306---mysql)
       * [Port 3339 - Oracle web interface](#port-3339---oracle-web-interface)
       * [RDP - 3389](#rdp---3389)
+      * [WinRM - 5985](#winrm---5985)
       * [VNC - 5900](#vnc---5900)
       * [Webdav](#webdav)
       * [Unknown ports](#unknown-ports)
@@ -35,13 +42,14 @@ Table of Contents
          * [SQL-Injection](#sql-injection)
          * [XSS](#xss)
          * [Sql-login-bypass](#sql-login-bypass)
+         * [Bypass image upload restrictions](#bypass-image-upload-restrictions)
       * [Password brute force - last resort](#password-brute-force---last-resort)
    * [<strong>Vulnerability analysis</strong>](#vulnerability-analysis)
       * [BOF](#bof)
       * [Find xploits - Searchsploit and google](#find-xploits---searchsploit-and-google)
       * [Reverse Shells](#reverse-shells)
    * [<strong>Privilege escalation</strong>](#privilege-escalation)
-      * [Common](#common)
+      * [Common](#common-1)
          * [Set up Webserver](#set-up-webserver)
          * [Set up FTP Server](#set-up-ftp-server)
          * [Set up TFTP](#set-up-tftp)
@@ -63,11 +71,13 @@ Table of Contents
             * [SUID](#suid)
             * [PS Monitor for cron](#ps-monitor-for-cron)
          * [Linux Privesc Tools](#linux-privesc-tools)
+         * [Linux Precompiled Exploits](#linux-precompiled-exploits)
       * [Windows](#windows)
          * [Basic info](#basic-info-1)
          * [Kernel exploits](#kernel-exploits-1)
          * [Cleartext passwords](#cleartext-passwords)
          * [Reconfigure service parameters](#reconfigure-service-parameters)
+         * [Dump process for passwords](#dump-process-for-passwords)
          * [Inside service](#inside-service-1)
          * [Programs running as root/system](#programs-running-as-rootsystem)
          * [Installed software](#installed-software-1)
@@ -86,8 +96,10 @@ Table of Contents
          * [Scripts](#scripts-1)
             * [Useradd](#useradd)
             * [Powershell Run As](#powershell-run-as)
+            * [Powershell Reverse Shell](#powershell-reverse-shell)
          * [Windows privesc/enum tools](#windows-privescenum-tools)
-         * [Windows precompiled Scripts](#windows-precompiled-scripts)
+         * [Windows precompiled exploits](#windows-precompiled-exploits)
+         * [Windows Port Forwarding](#windows-port-forwarding)
    * [<strong>Loot</strong>](#loot)
       * [Linux](#linux-1)
          * [Proof](#proof)
@@ -141,9 +153,73 @@ nc -u 10.11.1.111 48772
 ## Enumeration AIO
 [Penetration Testing Methodology - 0DAYsecurity.com](http://0daysecurity.com/penetration-testing/enumeration.html)
 
+## File enumeration
+
+### Common
+
+```bash
+# Check real file type
+file file.xxx
+
+# Analyze strings
+strings file.xxx
+strings -a -n 15 file.xxx # Check the entire file and outputs strings longer than 15 chars
+
+# Check embedded files
+binwalk file.xxx # Check
+binwalk -e file.xxx # Extract
+
+# Check as binary file in hex
+ghex file.xxx
+
+# Check metadata
+exiftool file.xxx
+
+# Stego tool for multiple formats
+wget https://embeddedsw.net/zip/OpenPuff_release.zip
+unzip OpenPuff_release.zip -d ./OpenPuff
+wine OpenPuff/OpenPuff_release/OpenPuff.exe
+```
+
+### Disk files
+
+```bash
+# guestmount can mount any kind of disk file
+sudo apt-get install libguestfs-tools
+guestmount --add yourVirtualDisk.vhdx --inspector --ro /mnt/anydirectory
+```
+
+### Images
+
+```bash
+# Stego
+wget http://www.caesum.com/handbook/Stegsolve.jar -O stegsolve.jar
+chmod +x stegsolve.jar
+java -jar stegsolve.jar
+
+# Check png corrupted
+pngcheck -v image.jpeg
+
+# Check what kind of image is
+identify -verbose image.jpeg
+```
+
+### Audio
+
+```bash
+# Check spectrogram
+wget https://code.soundsoftware.ac.uk/attachments/download/2561/sonic-visualiser_4.0_amd64.deb
+dpkg -i sonic-visualiser_4.0_amd64.deb
+
+# Check for Stego
+hideme stego.mp3 -f && cat output.txt #AudioStego
+```
+
+
+
 ## Port 21 - FTP
 
-```
+```bash
 nmap --script ftp-anon,ftp-bounce,ftp-libopie,ftp-proftpd-backdoor,ftp-vsftpd-backdoor,ftp-vuln-cve2010-4221,tftp-enum -p 21 10.11.1.111
 ```
 
@@ -691,7 +767,7 @@ with script _badchars.py and
 	5.1 AWESOME WAY TO CHECK BADCHARS (https://bulbsecurity.com/finding-bad-characters-with-immunity-debugger-and-mona-py/):
 		a. !mona config -set workingfolder c:\logs\%p
 	    b. !mona bytearray -b "\x00\x0d"
-	    c. Copiar de c:\logs\%p\bytearray.txt al script y ejecutar de nuevo
+	    c. Copy from c:\logs\%p\bytearray.txt to python exploit and run again
 	    d. !mona compare -f C:\logs\%p\bytearray.bin -a 02F238D0 (ESP address)
 	    e. In " data", before unicode chars it shows badchars.
  6. Find JMP ESP with "!mona modules" or "!mona jmp -r esp" or "!mona jmp -r esp -cpb '\x00\x0a\x0d'" find one with security modules "FALSE"
