@@ -562,11 +562,14 @@ dotdotpwn.pl -m http -h 10.11.1.111 -M GET -o unix
 ### Url brute force
 
 ```
+# Ffuf
+ffuf -c -e '.htm','.php','.html','.js','.txt','.zip','.bak','.asp','.aspx','xml','.log' -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories-lowercase.txt -u https://10.11.1.11/mvc/FUZZ
+
 # Dirb not recursive
 dirb http://10.11.1.111 -r -o dirb-10.11.1.111.txt
 
 # Wfuzz
-wfuzz -c -z file,/usr/share/wfuzz/wordlist/general/common.txt --hc 404 http://10.11.1.8/FUZZ
+wfuzz -c -z file,/usr/share/wfuzz/wordlist/general/common.txt --hc 404 http://10.11.1.11/FUZZ
 
 # GoBuster
 gobuster dir -u http://10.11.1.111 -w /usr/share/seclists/Discovery/Web_Content/common.txt -s '200,204,301,302,307,403,500' -e
