@@ -22,6 +22,7 @@ Table of Contents
       * [LDAP - 389,636](#ldap---389636)
       * [HTTPS - 443](#https---443)
       * [500 - ISAKMP IKE](#500---isakmp-ike)
+      * [513/541 - Rlogin](#513541---rlogin)
       * [Port 554 - RTSP](#port-554---rtsp)
       * [Port 1030/1032/1033/1038](#port-1030103210331038)
       * [MSSQL - 1433](#mssql---1433)
@@ -372,6 +373,13 @@ mod_ssl,OpenSSL version Openfuck
 
 ```
 ike-scan 10.11.1.111
+```
+
+## 513/541 - Rlogin
+
+```
+apt install rsh-client
+rlogin -l root 10.11.1.111
 ```
 
 ## Port 554 - RTSP
