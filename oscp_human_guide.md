@@ -130,7 +130,7 @@ nmap -sn 10.11.1.1/24
 nmap -sS 10.11.1.111
 
 # Full complete slow scan with output
-nmap -sT -sC -sV -A -T4 -p- -O -A -Pn --script vuln -oA full 10.11.1.111
+nmap -sT -A -T4 -p- -Pn --script vuln -oA full 10.11.1.111
 
 # Autorecon
 python3 autorecon.py 10.11.1.111
