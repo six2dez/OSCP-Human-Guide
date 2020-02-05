@@ -35,6 +35,7 @@ Table of Contents
       * [RDP - 3389](#rdp---3389)
       * [WinRM - 5985](#winrm---5985)
       * [VNC - 5900](#vnc---5900)
+      * [MsDeploy - 8172](#msdeploy---8172)
       * [Webdav](#webdav)
       * [Unknown ports](#unknown-ports)
       * [Port 80 - Web server](#port-80---web-server)
@@ -132,7 +133,7 @@ nmap -sn 10.11.1.1/24
 nmap -sS 10.11.1.111
 
 # Full complete slow scan with output
-nmap -sT -A -T4 -p- -Pn --script vuln -oA full 10.11.1.111
+nmap -v -sT -A -T4 -p- -Pn --script vuln -oA full 10.11.1.111
 
 # Autorecon
 python3 autorecon.py 10.11.1.111
@@ -147,6 +148,13 @@ unicornscan -mU -v -I 10.11.1.111
 
 # Connect to udp if one is open
 nc -u 10.11.1.111 48772
+
+# Responder
+responder -I eth0 -A
+
+# Amass
+amass enum -ip 10.11.1.1/24
+
 ```
 - sparta
 - `python /root/Reconnoitre/Reconnoitre/reconnoitre.py -t 10.11.1.111 -o test --services`
@@ -324,8 +332,21 @@ nmap -p69 --script=tftp-enum.nse 10.11.1.111
 
 ## Kerberos - 88
 
+```
 - MS14-068
 - GetUserSPNs
+GET USERS:
+
+nmap -p 88 --script=krb5-enum-users --script-args="krb5-enum-users.realm='DOMAIN.LOCAL'" IP
+use auxiliary/gather/kerberos_enumusers
+
+https://www.tarlogic.com/blog/como-funciona-kerberos/
+https://www.tarlogic.com/blog/como-atacar-kerberos/
+
+python kerbrute.py -dc-ip IP -users /root/htb/kb_users.txt -passwords /root/pass_common_plus.txt -threads 20 -domain DOMAIN -outputfile kb_extracted_passwords.txt
+
+https://blog.stealthbits.com/extracting-service-account-passwords-with-kerberoasting/
+```
 
 ## Port 110 - Pop3
 
@@ -552,12 +573,17 @@ https://github.com/Hackplayers/evil-winrm
 ./evil-winrm.rb -i 10.11.1.111 -u Administrator -p 'password1'
 ```
 
-
-
 ## VNC - 5900
 
 ```
 nmap --script=vnc-info,vnc-brute,vnc-title -p 5900 10.11.1.111
+```
+
+## MsDeploy - 8172
+
+```
+Microsoft IIS Deploy port
+IP:8172/msdeploy.axd
 ```
 
 ## Webdav
