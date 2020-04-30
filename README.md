@@ -1,6 +1,11 @@
-# OSCP-Human-Guide (WIP)
+# OSCP-Human-Guide
+
+**Edit**
+I'm currently moving all the OSCP stuff and other things to my "[pentest-book](https://six2dez.gitbook.io/pentest-book/)". This repository will not have more updates. Sorry for the inconvenience.
 
 **This page is the jouney with some tips, the real guide is [HERE](https://github.com/six2dez/OSCP-Human-Guide/blob/master/oscp_human_guide.md)**
+
+
 
 My own OSCP guide with some presents, my owncrafted [guide](https://github.com/six2dez/OSCP-Human-Guide/blob/master/oscp_human_guide.md) and my Cherrytree [template](https://github.com/six2dez/OSCP-Human-Guide/blob/master/final_cherrytree_template.ctd), enjoy and feel free to contribute :)
 
