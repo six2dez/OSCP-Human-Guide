@@ -138,7 +138,9 @@ After this last month this was my result: IT Network unlocked, 32 machines roote
 - [This](https://github.com/whoisflynn/OSCP-Exam-Report-Template) is the template used for my exam report.
 - Report done in 4 hours.
 
-  
+## Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/six2dez/OSCP-Human-Guide.svg)](https://starchart.cc/six2dez/OSCP-Human-Guide)  
 
 
 
