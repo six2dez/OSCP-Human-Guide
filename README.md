@@ -9,10 +9,6 @@ I'm currently moving all the OSCP stuff and other things to my "[pentest-book](h
 
 My own OSCP guide with some presents, my owncrafted [guide](https://github.com/six2dez/OSCP-Human-Guide/blob/master/oscp_human_guide.md) and my Cherrytree [template](https://github.com/six2dez/OSCP-Human-Guide/blob/master/final_cherrytree_template.ctd), enjoy and feel free to contribute :)
 
-You can support this work buying me a coffee:
-
-[<img src="https://cdn.buymeacoffee.com/buttons/v2/default-green.png">](https://www.buymeacoffee.com/six2dez)
-
 Table of Contents
 =================
 
